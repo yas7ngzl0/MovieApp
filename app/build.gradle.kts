@@ -1,8 +1,25 @@
+// IMPORTS ARE FIRST
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
+
+// read local properties file
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+
+    FileInputStream(localPropertiesFile).use { fis ->
+        localProperties.load(fis)
+    }
+}
+
+// api key cannot be null
+val tmdbApiKey: String = localProperties.getProperty("tmdb_api_key") ?: ""
 
 android {
     namespace = "com.yasinguzel.movieapp"
@@ -16,6 +33,13 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // api key will be a regular string
+        buildConfigField(
+            "String",
+            "TMDB_API_KEY",
+            "\"$tmdbApiKey\""
+        )
     }
 
     buildTypes {
@@ -36,11 +60,11 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -67,5 +91,4 @@ dependencies {
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
 }
