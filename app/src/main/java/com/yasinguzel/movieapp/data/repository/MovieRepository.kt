@@ -58,4 +58,13 @@ class MovieRepository {
             Resource.Error(e.localizedMessage ?: "Hata")
         }
     }
+
+    suspend fun getMovieDetail(movieId: Int): Resource<com.yasinguzel.movieapp.data.model.Movie> {
+        return try {
+            val response = api.getMovieDetail(movieId = movieId)
+            Resource.Success(response)
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "Hata oluştu")
+        }
+    }
 }

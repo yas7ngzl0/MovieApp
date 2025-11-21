@@ -10,4 +10,9 @@
     <string name="error_occurred">Hata: %s</string>
     <string name="show_all">Hepsini Göster</string>
 
+    <string name="overview">Özet</string>
+    <string name="release_date">Çıkış Tarihi</string>
+    <string name="genres">Türler</string>
+
+
 </resources>

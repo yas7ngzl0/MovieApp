@@ -1,5 +1,6 @@
 package com.yasinguzel.movieapp.data.api
 
+import com.yasinguzel.movieapp.data.model.Movie
 import com.yasinguzel.movieapp.data.model.MovieResponse
 import com.yasinguzel.movieapp.util.Constants
 import retrofit2.http.GET
@@ -35,6 +36,7 @@ interface TmdbApi {
         @Query("page") page: Int = 1
     ): MovieResponse
 
+
     // Search Feature
     @GET("search/movie")
     suspend fun searchMovies(
@@ -42,4 +44,10 @@ interface TmdbApi {
         @Query("api_key") apiKey: String = Constants.API_KEY,
         @Query("page") page: Int = 1
     ): MovieResponse
+
+    @GET("movie/{movie_id}")
+    suspend fun getMovieDetail(
+        @retrofit2.http.Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String = Constants.API_KEY
+    ): Movie
 }

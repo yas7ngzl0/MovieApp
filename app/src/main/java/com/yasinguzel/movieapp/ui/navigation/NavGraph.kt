@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.yasinguzel.movieapp.R
+import com.yasinguzel.movieapp.ui.detail.DetailScreen
 import com.yasinguzel.movieapp.ui.home.HomeScreen
 import com.yasinguzel.movieapp.ui.movielist.MovieListScreen
 
@@ -21,8 +22,8 @@ fun NavGraph(navController: NavHostController) {
         composable(route = Screen.Home.route) {
             HomeScreen(
                 onMovieClick = { movieId ->
-                    // Navigate to Detail (Later)
-                    // navController.navigate(Screen.Detail.createRoute(movieId))
+                    // Navigate to Detail
+                    navController.navigate(Screen.Detail.createRoute(movieId))
                 },
                 onShowAllClick = { category ->
                     // Navigate to List Screen with Category Argument
@@ -50,8 +51,8 @@ fun NavGraph(navController: NavHostController) {
 
             MovieListScreen(
                 onMovieClick = { movieId ->
-                    // Navigate to Detail (Later)
-                    // navController.navigate(Screen.Detail.createRoute(movieId))
+
+                     navController.navigate(Screen.Detail.createRoute(movieId))
                 },
                 onBackClick = {
                     navController.popBackStack()
@@ -60,6 +61,17 @@ fun NavGraph(navController: NavHostController) {
             )
         }
 
-        // 3. Detail Screen (Coming Soon)
+        // 3. Detail Screen
+        composable(
+            route = Screen.Detail.route,
+            arguments = listOf(navArgument("movieId") { type = NavType.StringType })
+        ) {
+
+            DetailScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
     }
 }
