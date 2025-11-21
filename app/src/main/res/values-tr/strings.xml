@@ -2,4 +2,12 @@
 <resources>
     <string name="app_name">MovieApp</string>
     <string name="rating_format">⭐ %.1f</string>
+
+    <string name="now_playing">Vizyondakiler</string>
+    <string name="popular">Popüler</string>
+    <string name="top_rated">En Yüksek Puanlı</string>
+    <string name="upcoming">Yakında</string>
+    <string name="error_occurred">Hata: %s</string>
+    <string name="show_all">Hepsini Göster</string>
+
 </resources>

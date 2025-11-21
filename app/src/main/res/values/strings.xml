@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">MovieApp</string>
     <string name="rating_format">⭐ %.1f</string>
+
+    <string name="now_playing">Now Playing</string>
+    <string name="popular">Popular</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="error_occurred">Error: %s</string>
+    <string name="show_all">Show All</string>
 </resources>
