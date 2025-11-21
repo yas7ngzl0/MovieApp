@@ -10,4 +10,7 @@ object Constants {
 
 
     const val API_KEY = BuildConfig.TMDB_API_KEY
+
+    // Dummy Profile Image URL (Placeholder)
+    const val DUMMY_AVATAR = "https://i.pravatar.cc/300"
 }
