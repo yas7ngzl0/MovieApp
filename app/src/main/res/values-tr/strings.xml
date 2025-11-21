@@ -14,5 +14,12 @@
     <string name="release_date">Çıkış Tarihi</string>
     <string name="genres">Türler</string>
 
+    <string name="search_hint">Film ara…</string>
+
+    <string name="home_tab">Ana Sayfa</string>
+    <string name="search_tab">Arama</string>
+
+
+
 
 </resources>

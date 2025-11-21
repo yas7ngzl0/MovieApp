@@ -19,5 +19,11 @@ data class Movie(
 @SerializedName("backdrop_path") val backdropPath: String?,
 @SerializedName("release_date") val releaseDate: String?,
 @SerializedName("vote_average") val voteAverage: Double,
-@SerializedName("genre_ids") val genreIds: List<Int>?
+@SerializedName("genre_ids") val genreIds: List<Int>?,
+    @SerializedName("genres") val genres: List<Genre>?
+)
+
+// we need this model to show user selected film category on details screen
+data class Genre(
+    @SerializedName("name") val name: String
 )

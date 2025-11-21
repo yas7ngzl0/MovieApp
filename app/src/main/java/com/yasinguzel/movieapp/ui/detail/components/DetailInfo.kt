@@ -56,6 +56,20 @@ fun DetailInfo(movie: Movie) {
             )
         }
 
+
+        // Display genres as a comma-separated list (e.g., "Action, Adventure, Sci-Fi")
+        if (!movie.genres.isNullOrEmpty()) {
+            val genreText = movie.genres.joinToString(separator = ", ") { it.name }
+
+            Text(
+                text = "${stringResource(id = R.string.genres)}: $genreText",
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium, // Slightly bold
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+        }
+
         // Overview Section Title
         Text(
             text = stringResource(R.string.overview),

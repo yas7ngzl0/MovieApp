@@ -85,7 +85,6 @@ fun DetailScreen(
                 }
             },
             modifier = Modifier
-                // FIX 1: Push down below the status bar (avoid overlap with system clock)
                 .statusBarsPadding()
                 .padding(16.dp)
                 .align(Alignment.TopStart)

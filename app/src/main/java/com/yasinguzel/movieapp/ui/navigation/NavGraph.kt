@@ -11,6 +11,7 @@ import com.yasinguzel.movieapp.R
 import com.yasinguzel.movieapp.ui.detail.DetailScreen
 import com.yasinguzel.movieapp.ui.home.HomeScreen
 import com.yasinguzel.movieapp.ui.movielist.MovieListScreen
+import com.yasinguzel.movieapp.ui.search.SearchScreen
 
 @Composable
 fun NavGraph(navController: NavHostController) {
@@ -70,6 +71,15 @@ fun NavGraph(navController: NavHostController) {
             DetailScreen(
                 onBackClick = {
                     navController.popBackStack()
+                }
+            )
+        }
+        // 4. Search Screen
+        composable(route = Screen.Search.route) {
+            SearchScreen(
+                onMovieClick = { movieId ->
+                    // route the datils page when user clicked on result items
+                    navController.navigate(Screen.Detail.createRoute(movieId))
                 }
             )
         }

@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import com.yasinguzel.movieapp.ui.theme.MovieAppTheme
 
 import androidx.navigation.compose.rememberNavController
+import com.yasinguzel.movieapp.ui.MainScreen
 import com.yasinguzel.movieapp.ui.navigation.NavGraph
 
 class MainActivity : ComponentActivity() {
@@ -29,7 +30,7 @@ class MainActivity : ComponentActivity() {
 
                     val navController = rememberNavController()
                     // This will automatically load the 'startDestination' (HomeScreen)
-                    NavGraph(navController = navController)
+                    MainScreen(navController = navController)
                 }
             }
         }

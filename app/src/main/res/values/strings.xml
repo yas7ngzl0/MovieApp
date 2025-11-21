@@ -12,4 +12,9 @@
     <string name="overview">Overview</string>
     <string name="release_date">Release Date</string>
     <string name="genres">Genres</string>
+
+    <string name="search_hint">Search movies…</string>
+
+    <string name="home_tab">Home</string>
+    <string name="search_tab">Search</string>
 </resources>
