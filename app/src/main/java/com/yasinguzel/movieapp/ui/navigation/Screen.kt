@@ -7,4 +7,8 @@ sealed class Screen(val route: String) {
         // Helper to construct route with arguments
         fun createRoute(movieId: Int) = "detail_screen/$movieId"
     }
+    // It accepts a category argument (e.g., "movie_list_screen/popular")
+    object MovieList : Screen("movie_list_screen/{category}") {
+        fun createRoute(category: MovieCategory) = "movie_list_screen/${category.key}"
+    }
 }

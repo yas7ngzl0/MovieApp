@@ -8,22 +8,28 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.yasinguzel.movieapp.ui.home.HomeScreen
 import com.yasinguzel.movieapp.ui.theme.MovieAppTheme
+
+import androidx.navigation.compose.rememberNavController
+import com.yasinguzel.movieapp.ui.navigation.NavGraph
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //because we wrap all all screen
+        // Enables edge-to-edge (full screen) experience
         enableEdgeToEdge()
-        setContent {
 
+        setContent {
+            // Apply our custom Theme
             MovieAppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen()
+
+                    val navController = rememberNavController()
+                    // This will automatically load the 'startDestination' (HomeScreen)
+                    NavGraph(navController = navController)
                 }
             }
         }

@@ -29,7 +29,7 @@ fun MovieSection(
     title: String,
     movies: List<Movie>,
     onMovieClick: (Int) -> Unit,
-    onSeeAllClick: () -> Unit = {} // Yeni: Tümünü gör tıklama olayı (Şimdilik boş varsayılan)
+    onShowAllClick: () -> Unit = {} // Yeni: Tümünü gör tıklama olayı (Şimdilik boş varsayılan)
 ) {
     if (movies.isNotEmpty()) {
         Column(modifier = Modifier.padding(vertical = 12.dp)) {
@@ -50,7 +50,7 @@ fun MovieSection(
                 )
 
                 // See All Button
-                TextButton(onClick = onSeeAllClick) {
+                TextButton(onClick = onShowAllClick) {
                     Text(
                         text = stringResource(id = R.string.show_all),
                         style = MaterialTheme.typography.bodyMedium,

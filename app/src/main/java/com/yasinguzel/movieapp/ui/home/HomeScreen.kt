@@ -34,6 +34,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.yasinguzel.movieapp.R
 import com.yasinguzel.movieapp.ui.components.MovieSection
+import com.yasinguzel.movieapp.ui.navigation.MovieCategory
 import com.yasinguzel.movieapp.util.Constants
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,7 +43,7 @@ fun HomeScreen(
     // Navigation callback: When a movie is clicked, trigger this function
     onMovieClick: (Int) -> Unit = {},
     // Navigation callback: When 'See All' is clicked (We will use this later)
-    onShowAllClick: () -> Unit = {}
+    onShowAllClick: (MovieCategory) -> Unit = {}
 ) {
     val viewModel: HomeViewModel = viewModel()
     val state by viewModel.state.collectAsState()
@@ -117,7 +118,7 @@ fun HomeScreen(
                         title = stringResource(R.string.now_playing),
                         movies = state.nowPlayingMovies,
                         onMovieClick = onMovieClick,
-                        onSeeAllClick = onShowAllClick
+                        onShowAllClick = { onShowAllClick(MovieCategory.NOW_PLAYING) }
                     )
 
                     // Popular Section
@@ -125,7 +126,7 @@ fun HomeScreen(
                         title = stringResource(R.string.popular),
                         movies = state.popularMovies,
                         onMovieClick = onMovieClick,
-                        onSeeAllClick = onShowAllClick
+                        onShowAllClick = { onShowAllClick(MovieCategory.POPULAR) }
                     )
 
                     // Top Rated Section
@@ -133,7 +134,7 @@ fun HomeScreen(
                         title = stringResource(R.string.top_rated),
                         movies = state.topRatedMovies,
                         onMovieClick = onMovieClick,
-                        onSeeAllClick = onShowAllClick
+                        onShowAllClick = { onShowAllClick(MovieCategory.TOP_RATED) }
                     )
 
                     // Upcoming Section
@@ -141,7 +142,7 @@ fun HomeScreen(
                         title = stringResource(R.string.upcoming),
                         movies = state.upcomingMovies,
                         onMovieClick = onMovieClick,
-                        onSeeAllClick = onShowAllClick
+                        onShowAllClick = { onShowAllClick(MovieCategory.UPCOMING) }
                     )
                 }
             }
