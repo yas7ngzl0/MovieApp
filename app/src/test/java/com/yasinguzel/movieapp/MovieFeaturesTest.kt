@@ -76,4 +76,41 @@ class MovieFeaturesTest {
             else -> println("Loading...")
         }
     }
+
+
+
+    @Test
+    fun testSearchLogic() = runBlocking {
+        println("TEST: Testing Search Functionality...")
+
+        val query = "Matrix" // Test query
+        println("STEP 1: Searching for '$query'...")
+
+        // Execute search via repository
+        val searchResult = repository.searchMovies(query = query, page = 1)
+
+        when(searchResult) {
+            is Resource.Success -> {
+                val movies = searchResult.data?.results
+
+                // 1. Check if results exist
+                assertTrue("Search results should not be empty", !movies.isNullOrEmpty())
+                println("   -> Found ${movies?.size} movies.")
+
+                // 2. Check accuracy (Does the first movie actually contain 'Matrix'?)
+                val firstMovie = movies?.first()
+                println("   -> First Match: ${firstMovie?.title}")
+
+                val isMatch = firstMovie?.title?.contains(query, ignoreCase = true) == true
+                assertTrue("First result should contain the query string", isMatch)
+
+                println("TEST: SEARCH SUCCESS! Results are relevant.")
+            }
+            is Resource.Error -> {
+                println("TEST: ERROR! ${searchResult.message}")
+                assert(false)
+            }
+            else -> println("Loading...")
+        }
+    }
 }
