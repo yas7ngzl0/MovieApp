@@ -37,6 +37,14 @@ class MovieListViewModel(
         loadNextPage()
     }
 
+    /**
+     * Retries loading the data.
+     * If it's the first page or a next page failure, calling loadNextPage() handles it.
+     */
+    fun retry() {
+        loadNextPage()
+    }
+
     fun loadNextPage() {
         // Prevent duplicate requests if already loading or if we reached the end
         if (_state.value.isLoading || _state.value.endReached) return

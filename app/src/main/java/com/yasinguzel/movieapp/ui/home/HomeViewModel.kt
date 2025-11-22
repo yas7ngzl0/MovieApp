@@ -36,9 +36,14 @@ class HomeViewModel(
         fetchAllMovies()
     }
 
+    // YENİ EKLENEN FONKSİYON: UI'dan çağrılabilir
+    fun retry() {
+        fetchAllMovies()
+    }
+
     private fun fetchAllMovies() {
         viewModelScope.launch {
-            _state.value = _state.value.copy(isLoading = true)
+            _state.value = _state.value.copy(isLoading = true,error = null)
 
             // Execute API calls concurrently for better performance
             val nowPlayingDeferred = async { repository.getNowPlayingMovies(1) }

@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yasinguzel.movieapp.R
+import com.yasinguzel.movieapp.ui.components.ErrorScreen
 import com.yasinguzel.movieapp.ui.components.MovieItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -133,11 +134,11 @@ fun MovieListScreen(
             }
 
             // Error Message
+            // 3. Error Screen (Only if list is empty - Initial Load Error)
             if (state.error != null && state.movies.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.error_occurred, state.error ?: ""),
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.align(Alignment.Center)
+                ErrorScreen(
+                    message = state.error ?: "Unknown Error",
+                    onRetry = { viewModel.retry() }
                 )
             }
         }

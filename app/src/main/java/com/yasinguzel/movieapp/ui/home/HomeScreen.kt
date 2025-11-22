@@ -33,6 +33,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.yasinguzel.movieapp.R
+import com.yasinguzel.movieapp.ui.components.ErrorScreen
 import com.yasinguzel.movieapp.ui.components.MovieSection
 import com.yasinguzel.movieapp.ui.navigation.MovieCategory
 import com.yasinguzel.movieapp.util.Constants
@@ -97,16 +98,20 @@ fun HomeScreen(
             }
 
             // 2. Error Message
+            // 2. Error Message (GÜNCELLENDİ)
             state.error?.let { errorMsg ->
-                Text(
-                    text = stringResource(R.string.error_occurred, errorMsg),
-                    color = Color.Red,
-                    modifier = Modifier.align(Alignment.Center)
+                // Eski basit Text yerine, yeni havalı ekranı kullanıyoruz
+                ErrorScreen(
+                    message = errorMsg,
+                    onRetry = {
+                        // Butona basılınca ViewModel'e "Tekrar dene" diyoruz
+                        viewModel.retry()
+                    }
                 )
             }
 
             // 3. Main Content (Scrollable List of Sections)
-            if (!state.isLoading) {
+            if (!state.isLoading && state.error == null) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()

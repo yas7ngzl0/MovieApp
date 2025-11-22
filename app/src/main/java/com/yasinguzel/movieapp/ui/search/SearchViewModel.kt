@@ -23,20 +23,21 @@ data class SearchState(
     val error: String? = null
 )
 
-/**
- * ViewModel for the Search Screen.
- * * REFACTOR FOR TESTING:
- * We switched to Constructor Injection. Instead of creating 'repository' and 'historyManager'
- * inside the class, we pass them as arguments. This allows us to pass Mock (fake) versions
- * of these dependencies when writing Unit Tests.
- */
 class SearchViewModel(
     application: Application,
-    // CHANGE 1: Injected Repository with default value for production code
-    private val repository: MovieRepository = MovieRepository(),
-    // CHANGE 2: Injected HistoryManager with default value for production code
-    private val historyManager: SearchHistoryManager = SearchHistoryManager(application)
+    private val repository: MovieRepository,
+    private val historyManager: SearchHistoryManager
 ) : AndroidViewModel(application) {
+
+    // --- FIX: SECONDARY CONSTRUCTOR ---
+    // This constructor is used by the Android Framework (Runtime).
+    // It calls the primary constructor with default dependencies.
+    constructor(application: Application) : this(
+        application,
+        MovieRepository(),
+        SearchHistoryManager(application)
+    )
+    // ----------------------------------
 
     private val _state = MutableStateFlow(SearchState())
     val state: StateFlow<SearchState> = _state.asStateFlow()
@@ -50,6 +51,20 @@ class SearchViewModel(
 
     private fun loadHistory() {
         _state.value = _state.value.copy(history = historyManager.getHistory())
+    }
+
+    /**
+     * Retries the last search query immediately without debounce.
+     * Used by ErrorScreen's retry button.
+     */
+    fun retry() {
+        val currentQuery = _state.value.query
+        if (currentQuery.isNotBlank()) {
+            searchJob?.cancel()
+            searchJob = viewModelScope.launch {
+                performSearch(currentQuery)
+            }
+        }
     }
 
     /**

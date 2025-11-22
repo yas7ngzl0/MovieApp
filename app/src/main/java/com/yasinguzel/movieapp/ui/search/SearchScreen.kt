@@ -23,7 +23,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
-import androidx.compose.material3.SearchBarDefaults // <-- YENİ: Bunu import etmeyi unutma
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -34,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yasinguzel.movieapp.R
+import com.yasinguzel.movieapp.ui.components.ErrorScreen
 import com.yasinguzel.movieapp.ui.components.MovieItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,7 +47,6 @@ fun SearchScreen(
 
     Scaffold(
         topBar = {
-            //new material 3 search bar
             SearchBar(
                 inputField = {
                     SearchBarDefaults.InputField(
@@ -78,16 +78,27 @@ fun SearchScreen(
     ) { innerPadding ->
         Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
 
-            // 1. Loading
+            // 1. Loading State
             if (state.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
 
-            // 2. SHOW SEARCH HISTORY
-            if (!state.isLoading && state.query.isEmpty() && state.history.isNotEmpty()) {
-                LazyColumn(
-                    contentPadding = PaddingValues(16.dp)
-                ) {
+
+            // If we have an error and its nor laoding show error screen to user
+            state.error?.let { errorMsg ->
+                if (!state.isLoading) {
+                    ErrorScreen(
+                        message = errorMsg,
+                        onRetry = { viewModel.retry() }
+                    )
+                }
+            }
+
+
+
+            // 3. Search History
+            if (!state.isLoading && state.error == null && state.query.isEmpty() && state.history.isNotEmpty()) {
+                LazyColumn(contentPadding = PaddingValues(16.dp)) {
                     item {
                         Text(
                             text = stringResource(R.string.recent_searches),
@@ -113,7 +124,6 @@ fun SearchScreen(
                                 modifier = Modifier.padding(start = 16.dp).weight(1f),
                                 style = MaterialTheme.typography.bodyLarge
                             )
-                            // Delete button
                             IconButton(onClick = { viewModel.onDeleteHistoryItem(historyItem) }) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
@@ -126,8 +136,8 @@ fun SearchScreen(
                 }
             }
 
-            // 3.  SHOW MOVIE RESULTS
-            if (!state.isLoading && state.query.isNotEmpty() && state.movies.isNotEmpty()) {
+            // 4. Search Results
+            if (!state.isLoading && state.error == null && state.query.isNotEmpty() && state.movies.isNotEmpty()) {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(3),
                     contentPadding = PaddingValues(10.dp),
@@ -140,9 +150,8 @@ fun SearchScreen(
                 }
             }
 
-            // 4. Empty State
-            if (!state.isLoading && state.query.isNotEmpty() && state.movies.isEmpty() && state.error == null) {
-
+            // 5. Empty State (No movies found)
+            if (!state.isLoading && state.error == null && state.query.isNotEmpty() && state.movies.isEmpty()) {
                 Text(
                     text = stringResource(R.string.no_movies_found),
                     modifier = Modifier.align(Alignment.Center)

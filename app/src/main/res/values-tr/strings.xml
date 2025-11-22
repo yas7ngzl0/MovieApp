@@ -21,7 +21,8 @@
     <string name="home_tab">Ana Sayfa</string>
     <string name="search_tab">Arama</string>
 
-
+    <string name="something_went_wrong">Bir şeyler ters gitti!</string>
+    <string name="retry">Tekrar Dene</string>
 
 
 </resources>

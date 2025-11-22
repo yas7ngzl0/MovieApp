@@ -21,14 +21,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.yasinguzel.movieapp.ui.components.ErrorScreen
 import com.yasinguzel.movieapp.ui.detail.components.DetailHeader
 import com.yasinguzel.movieapp.ui.detail.components.DetailInfo
-import androidx.compose.runtime.setValue
 
 @Composable
 fun DetailScreen(
@@ -37,55 +38,60 @@ fun DetailScreen(
     val viewModel: DetailViewModel = viewModel()
     val state by viewModel.state.collectAsState()
     val scrollState = rememberScrollState()
+
+    // State to manage debounce for back button clicks
     var lastClickTime by remember { mutableLongStateOf(0L) }
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        // 1. Loading State Indicator
+        //  Loading State Indicator
         if (state.isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
 
-        // 2. Error State Message
-        state.error?.let { error ->
-            Text(
-                text = error,
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.align(Alignment.Center)
+        //  Error State Handling
+        // If an error occurs, display the custom ErrorScreen with a Retry button
+        state.error?.let { errorMsg ->
+            ErrorScreen(
+                message = errorMsg,
+                onRetry = { viewModel.retry() }
             )
         }
 
-        // 3. Main Content (Displayed when data is loaded)
-        state.movie?.let { movie ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(scrollState) // Enable vertical scrolling for the whole screen
-            ) {
-                // Component 1: Header (Image, Play Button)
-                DetailHeader(
-                    movie = movie,
-                    onPlayClick = { /* Handle Play Action */ }
-                )
+        //  Main Content (Display only if there is no error)
+        if (state.error == null) {
+            state.movie?.let { movie ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(scrollState) // Enable vertical scrolling for the whole screen
+                ) {
+                    // Component 1: Header (Backdrop Image, Poster, Play Button)
+                    DetailHeader(
+                        movie = movie,
+                        onPlayClick = { /* Handle Play Action */ }
+                    )
 
-                // Component 2: Info (Title, Overview, Rating)
-                DetailInfo(movie = movie)
+                    // Component 2: Info (Title, Overview, Rating, Genres)
+                    DetailInfo(movie = movie)
+                }
             }
         }
 
-        // 4. Back Button (Floating on Top-Left)
+        //  Back Button (Floating on Top-Left)
+        // Always visible to allow navigation back even in error states
         IconButton(
             onClick = {
                 val currentTime = System.currentTimeMillis()
-                // Only allow click if 500ms has passed since the last click
-                // to block spam
+                // Debounce logic: Only allow click if 1000ms has passed since the last click
+                // This prevents navigation spam / double clicks.
                 if (currentTime - lastClickTime > 1000) {
                     lastClickTime = currentTime
                     onBackClick()
                 }
             },
             modifier = Modifier
-                .statusBarsPadding()
+                .statusBarsPadding() // Push the button below the system status bar
                 .padding(16.dp)
                 .align(Alignment.TopStart)
                 .background(Color.Black.copy(alpha = 0.4f), shape = CircleShape)

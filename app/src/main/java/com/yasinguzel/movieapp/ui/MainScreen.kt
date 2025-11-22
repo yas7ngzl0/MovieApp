@@ -48,7 +48,7 @@ fun MainScreen(navController: NavHostController) {
                             // Avoid multiple copies of the same destination
                             launchSingleTop = true
                             // Restore state when reselecting a previously selected item
-                            restoreState = true
+                            restoreState = false
                         }
                     }
                 )
