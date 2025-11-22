@@ -1,4 +1,4 @@
-package com.yasinguzel.movieapp
+package com.yasinguzel.movieapp.integrationTests
 
 import com.yasinguzel.movieapp.data.repository.MovieRepository
 import com.yasinguzel.movieapp.util.Resource

@@ -83,6 +83,11 @@ dependencies {
     //kapt("com.google.dagger:hilt-android-compiler:2.48")
 
     testImplementation(libs.junit)
+    // Unit Testing Libraries
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("io.mockk:mockk:1.13.8") // Best library of kotlin for mock
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3") // To make corutines test
+    testImplementation("androidx.arch.core:core-testing:2.2.0") // Live Data test
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

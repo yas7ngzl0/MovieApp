@@ -15,17 +15,19 @@ import kotlinx.coroutines.launch
 data class HomeState(
     val isLoading: Boolean = false,
     val error: String? = null,
-
-    // Lists for different movie categories [cite: 15]
-val nowPlayingMovies: List<Movie> = emptyList(),
-val popularMovies: List<Movie> = emptyList(),
-val topRatedMovies: List<Movie> = emptyList(),
-val upcomingMovies: List<Movie> = emptyList()
+    val nowPlayingMovies: List<Movie> = emptyList(),
+    val popularMovies: List<Movie> = emptyList(),
+    val topRatedMovies: List<Movie> = emptyList(),
+    val upcomingMovies: List<Movie> = emptyList()
 )
 
-class HomeViewModel : ViewModel() {
-
-    private val repository = MovieRepository()
+// REFACTOR: Constructor Injection for Testability.
+// We pass the repository as a parameter to allow mocking in Unit Tests.
+// A default value "= MovieRepository()" is provided so that existing code (MainActivity)
+// works without any changes.
+class HomeViewModel(
+    private val repository: MovieRepository = MovieRepository()
+) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeState())
     val state: StateFlow<HomeState> = _state.asStateFlow()

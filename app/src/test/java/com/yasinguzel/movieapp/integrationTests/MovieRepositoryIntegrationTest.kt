@@ -1,4 +1,4 @@
-package com.yasinguzel.movieapp
+package com.yasinguzel.movieapp.integrationTests
 
 import com.yasinguzel.movieapp.data.repository.MovieRepository
 import com.yasinguzel.movieapp.util.Resource
@@ -8,7 +8,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class MovieFeaturesTest {
+class MovieRepositoryIntegrationTest {
 
     private val repository = MovieRepository()
 

@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-// Updated State with History list
+// UI State holding the search query, results, history, and loading status
 data class SearchState(
     val query: String = "",
     val movies: List<Movie> = emptyList(),
@@ -23,11 +23,20 @@ data class SearchState(
     val error: String? = null
 )
 
-// Changed to AndroidViewModel to access Application Context
-class SearchViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repository = MovieRepository()
-    private val historyManager = SearchHistoryManager(application) // Initialize Manager
+/**
+ * ViewModel for the Search Screen.
+ * * REFACTOR FOR TESTING:
+ * We switched to Constructor Injection. Instead of creating 'repository' and 'historyManager'
+ * inside the class, we pass them as arguments. This allows us to pass Mock (fake) versions
+ * of these dependencies when writing Unit Tests.
+ */
+class SearchViewModel(
+    application: Application,
+    // CHANGE 1: Injected Repository with default value for production code
+    private val repository: MovieRepository = MovieRepository(),
+    // CHANGE 2: Injected HistoryManager with default value for production code
+    private val historyManager: SearchHistoryManager = SearchHistoryManager(application)
+) : AndroidViewModel(application) {
 
     private val _state = MutableStateFlow(SearchState())
     val state: StateFlow<SearchState> = _state.asStateFlow()
@@ -35,7 +44,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     private var searchJob: Job? = null
 
     init {
-        // Load history when ViewModel starts
+        // Load search history immediately when ViewModel starts
         loadHistory()
     }
 
@@ -43,12 +52,18 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         _state.value = _state.value.copy(history = historyManager.getHistory())
     }
 
+    /**
+     * Called when the user types in the search bar.
+     * Implements Debounce logic to avoid spamming the API.
+     */
     fun onQueryChange(newQuery: String) {
         _state.value = _state.value.copy(query = newQuery)
+
+        // Cancel the previous search job if the user keeps typing
         searchJob?.cancel()
 
         if (newQuery.isBlank()) {
-            // If query is empty, show history again and clear movies
+            // If query is cleared, show history again and clear movie results
             _state.value = _state.value.copy(
                 movies = emptyList(),
                 history = historyManager.getHistory()
@@ -56,8 +71,9 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             return
         }
 
+        // Start a new search with a delay (Debounce)
         searchJob = viewModelScope.launch {
-            delay(1000L)
+            delay(1000L) // Wait for 1 second pause before hitting the API
             performSearch(newQuery)
         }
     }
@@ -68,13 +84,13 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     fun onDeleteHistoryItem(item: String) {
         historyManager.removeItem(item)
-        loadHistory() // Refresh UI
+        loadHistory() // Refresh the UI list
     }
 
     private suspend fun performSearch(query: String) {
         _state.value = _state.value.copy(isLoading = true, error = null)
 
-        // Save valid search to history
+        // Save this valid search to history
         historyManager.addSearchQuery(query)
 
         when (val result = repository.searchMovies(query = query, page = 1)) {
