@@ -29,7 +29,7 @@ fun MovieSection(
     title: String,
     movies: List<Movie>,
     onMovieClick: (Int) -> Unit,
-    onShowAllClick: () -> Unit = {} // Yeni: Tümünü gör tıklama olayı (Şimdilik boş varsayılan)
+    onShowAllClick: () -> Unit = {} // New: Click event for 'See All' (Default is empty)
 ) {
     if (movies.isNotEmpty()) {
         Column(modifier = Modifier.padding(vertical = 12.dp)) {
@@ -39,8 +39,8 @@ fun MovieSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween, // İki uca yasla
-                verticalAlignment = Alignment.CenterVertically // Dikeyde ortala
+                horizontalArrangement = Arrangement.SpaceBetween, // Space items to edges
+                verticalAlignment = Alignment.CenterVertically // Center vertically
             ) {
                 // Section Title
                 Text(
@@ -54,7 +54,7 @@ fun MovieSection(
                     Text(
                         text = stringResource(id = R.string.show_all),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary // Temanın ana rengini kullan
+                        color = MaterialTheme.colorScheme.primary // Use primary theme color
                     )
                 }
             }

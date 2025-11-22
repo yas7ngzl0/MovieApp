@@ -38,7 +38,7 @@ fun MovieItem(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
-            // 1. Movie Poster [cite: 16]
+            // 1. Movie Poster
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(Constants.IMAGE_BASE_URL + movie.posterPath)
@@ -51,7 +51,7 @@ fun MovieItem(
                 contentScale = ContentScale.Crop
             )
 
-            // 2. Movie Title [cite: 16]
+            // 2. Movie Title
             Text(
                 text = movie.title,
                 fontWeight = FontWeight.Bold,
@@ -61,7 +61,7 @@ fun MovieItem(
                 modifier = Modifier.padding(8.dp)
             )
 
-            // 3. Rating (Localized) [cite: 21]
+            // 3. Rating (Localized)
             Text(
                 // Uses string resource with arguments (e.g., "⭐ 8.5")
                 text = stringResource(id = R.string.rating_format, movie.voteAverage),
