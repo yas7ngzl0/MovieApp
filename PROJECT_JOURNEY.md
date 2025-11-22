@@ -129,7 +129,7 @@ Proje boyunca modern AI araçlarından yararlandım; ancak kullanım biçimim be
 Bu yaklaşım sayesinde hem zaman kazandım hem de proje üzerinde tam hâkimiyet sağladım.
 
 
-## **11. Hilt Yerine Neden Manuel DI Tercih Ettim ? **
+## **11. Hilt Yerine Neden Manuel DI Tercih Ettim ?**
 
 Challenge'da Hilt önerilmesine rağmen, proje ölçeği (3-4 ekran) ve teslim süresi (Time-to-Market) göz önüne alındığında, Constructor Injection yöntemiyle Manuel DI uygulamanın daha doğru bir yöntem olduğuna karar verdim. Bu sayede Hilt'in kurulumda çıkarması muhtemelen sorunlarından ve kurulum maliyetinden kaçınırken (zaman) aynı işlevi görecek basit ve küçük ölçekte sürdürülebilir bir yapı kurdum
 
